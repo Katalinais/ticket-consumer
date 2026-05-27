@@ -1,4 +1,4 @@
-import { Kafka, Producer } from 'kafkajs';
+import { Kafka, Producer, Partitioners } from 'kafkajs';
 
 const kafka = new Kafka({
   clientId: 'consumer-app-producer',
@@ -9,7 +9,7 @@ let producer: Producer | null = null;
 
 export async function getProducer(): Promise<Producer> {
   if (!producer) {
-    producer = kafka.producer();
+    producer = kafka.producer({ createPartitioner: Partitioners.DefaultPartitioner });
     await producer.connect();
     console.log('[Kafka Producer] Connected');
   }
